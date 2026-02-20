@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday | 20 💙</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary-blue: #3B82F6;
+            --dark-bg: #050B14;
+            --glass: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark-bg); color: white; scroll-behavior: smooth; overflow-x: hidden; }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 24px;
+            text-align: center;
+            z-index: 20;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-blue);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4); }
+
+        /* --- BMW Section --- */
+        #bmw { background: url('m3.jpg') center/cover no-repeat; position: relative; overflow: hidden; }
+        .road { position: absolute; bottom: 0; width: 100%; height: 20%; background: #111; border-top: 2px solid #333; }
+        #car {
+            position: absolute; bottom: 12%; left: -500px; width: 400px; height: 120px; z-index: 10;
+            transition: left 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            background: url('bmw.png') center/contain no-repeat;
+        }
+        .counter-display { font-size: 8rem; font-weight: 900; color: rgba(255, 255, 255, 0.05); position: absolute; z-index: 1; }
+
+        /* --- Cake Section --- */
+        #cakeSection {
+            background: linear-gradient(rgba(5, 11, 20, 0.6), rgba(5, 11, 20, 0.6)), url('friends.jpg') center/cover no-repeat;
+            position: relative;
+        }
+        #wishDisplay {
+            min-height: 60px; margin-bottom: 20px; font-size: 1.4rem; font-weight: 600;
+            color: var(--primary-blue); text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            transition: 0.3s; text-align: center;
+        }
+
+        .cake-container { display: flex; flex-direction: column; align-items: center; scale: 1.1; }
+        .layer { border-radius: 20px; margin-bottom: -5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .bottom { width: 280px; height: 80px; background: #1E3A8A; }
+        .middle { width: 220px; height: 70px; background: #2563EB; }
+        .top { width: 160px; height: 60px; background: #60A5FA; }
+
+        .candle { width: 10px; height: 35px; background: white; border-radius: 3px; position: relative; cursor: pointer; }
+        .flame {
+            width: 12px; height: 18px; background: orange; border-radius: 50% 50% 20% 20%;
+            position: absolute; top: -20px; box-shadow: 0 0 10px orange;
+            animation: flicker 0.1s infinite alternate;
+        }
+
+        @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+        /* --- Finale --- */
+        #message { font-size: 1.3rem; line-height: 1.7; color: #CBD5E1; }
+        #final {
+            background: linear-gradient(rgba(5, 11, 20, 0.6), rgba(5, 11, 20, 0.6)), url('bestie.jpg') center/cover no-repeat;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+
+<audio id="birthdayAudio" loop>
+    <source src="theme.mp3" type="audio/mpeg">
+</audio>
+
+<section id="forest" style="background: linear-gradient(rgba(5, 11, 20, 0.7), rgba(5, 11, 20, 0.7)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80') center/cover;">
+    <div class="glass-card">
+        <h1>Legend Status<br><span style="color:var(--primary-blue)">Unlocked.</span></h1>
+        <button onclick="startExperience()">Start Engine</button>
+    </div>
+</section>
+
+<section id="bmw">
+    <div class="road"></div>
+    <div class="counter-display" id="counter">00</div>
+    <div id="car"></div>
+    <div class="glass-card" id="bmwUI">
+        <h2>Ready to Shift?</h2>
+        <button onclick="startAcceleration()">Accelerate</button>
+    </div>
+    <div id="finalMessage" style="position:absolute; opacity:0; pointer-events:none; text-align:center; transition: 1s; z-index: 30;">
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">You've hit</h1>
+        <h1 style="font-size: 6rem; margin:0;">20</h1>
+        <h1 style="background-color: #111;">It's high time we relax and celebrate! <br></h1>
+        <button onclick="document.getElementById('cakeSection').scrollIntoView({behavior:'smooth'})" style="pointer-events: auto;">Next Stage</button>
+    </div>
+</section>
+
+<section id="cakeSection">
+    <div id="wishDisplay">Blow out all the candles!</div>
+    <div class="cake-container">
+        <div id="candles" style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; justify-content:center; max-width: 250px;"></div>
+        <div class="layer top"></div>
+        <div class="layer middle"></div>
+        <div class="layer bottom"></div>
+    </div>
+    <div style="margin-top: 40px;">
+        <button onclick="triggerFinale()">FINISH CELEBRATION</button>
+    </div>
+</section>
+
+<section id="final">
+    <div class="glass-card" style="max-width: 600px;">
+        <h1 style="margin-bottom: 20px;">Happy Birthday! 🎉</h1>
+        <div id="message"></div>
+    </div>
+</section>
+
+<script>
+/* 0. Audio Helper */
+const bdayAudio = document.getElementById('birthdayAudio');
+
+function startExperience() {
+    // Play the local theme.mp3 immediately
+    bdayAudio.play().catch(err => console.log("Audio block: ", err));
+    // Scroll to the next section
+    document.getElementById('bmw').scrollIntoView({behavior:'smooth'});
+}
+
+/* 1. BMW Logic */
+function startAcceleration() {
+    const car = document.getElementById('car');
+    const counter = document.getElementById('counter');
+    const ui = document.getElementById('bmwUI');
+    ui.style.opacity = '0';
+    car.style.left = '50%';
+    car.style.transform = 'translateX(-50%)';
+
+    let count = 0;
+    let timer = setInterval(() => {
+        count++;
+        counter.innerText = count < 10 ? "0" + count : count;
+        if(count >= 20) {
+            clearInterval(timer);
+            setTimeout(() => {
+                car.style.left = '150%';
+                setTimeout(() => {
+                    document.getElementById('finalMessage').style.opacity = '1';
+                    document.getElementById('finalMessage').style.pointerEvents = 'auto';
+                }, 500);
+            }, 800);
+        }
+    }, 80);
+}
+
+/* 2. Interactive Candles Logic */
+const birthdayMessages = [
+    "You are amazing!", "20 sure looks good on you.", "You make our lives better with your presence.",
+    "You're loved and appreciated.", "The world is better with you in it.", "Keep chasing your dreams!",
+    "You're a true legend in the making.", "May your 20s be your best decade yet!", "You inspire everyone around you.",
+    "Your kindness is a gift to the world.", "Keep shining bright like a star!", "Success looks natural on you.",
+    "You're one in a million.", "Stay humble, stay hungry.", "You're unstoppable!",
+    "Keep reaching for the stars.", "You bring so much joy to our lives.", "The best is yet to come!",
+    "Keep driving toward your goals.", "You're a masterpiece!"
+];
+
+const candleBox = document.getElementById("candles");
+const wishDisplay = document.getElementById("wishDisplay");
+
+for(let i=0; i<20; i++) {
+    let c = document.createElement("div");
+    c.className = "candle";
+    let f = document.createElement("div");
+    f.className = "flame";
+    c.onclick = function() {
+        if(f.style.display !== 'none') {
+            f.style.display = 'none'; 
+            wishDisplay.innerText = birthdayMessages[i];
+            wishDisplay.style.transform = "scale(1.1)";
+            setTimeout(() => { wishDisplay.style.transform = "scale(1)"; }, 200);
+        }
+    };
+    c.appendChild(f);
+    candleBox.appendChild(c);
+}
+
+/* 3. Finale Logic */
+function triggerFinale() {
+    document.getElementById('final').scrollIntoView({behavior: 'smooth'});
+    if (typeof confetti === 'function') {
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }
+    const text = "On 22nd February 2006, a true sweetheart was born. From taking your baby steps, terrorizing your older sibling, making girls fall for you in school, to now being the kindest and most genuine person I know, it's been one hell of a journey. In the past 20 years, you've touched hearts, inspired your peers, put smiles on faces, and made the world a better place just by being you. I cannot put into words how much light you've brought into my life in the past 4 years. You've always been an incredible best friend, and I am so grateful to have you in my life. Here's to many more years of laughter, love, and unforgettable memories. Happy 20th birthday! 🎉";
+    let i = 0;
+    const msgDiv = document.getElementById("message");
+    msgDiv.innerHTML = "";
+    function type() {
+        if (i < text.length) {
+            msgDiv.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, 40);
+        }
+    }
+    setTimeout(type, 1000);
+}
+</script>
+
+</body>
+</html>
